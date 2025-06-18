@@ -1,0 +1,17 @@
+[project]
+name = "game-of-life"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Conor Doyle", email = "conor@ehsai.ca" }
+]
+requires-python = ">=3.12"
+dependencies = []
+
+[project.scripts]
+game-of-life = "game_of_life:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
