@@ -10,7 +10,7 @@ requires-python = ">=3.12"
 dependencies = []
 
 [project.scripts]
-game-of-life = "game_of_life:main"
+game-of-life = "game_of_life.__main__:main"
 
 [build-system]
 requires = ["hatchling"]
