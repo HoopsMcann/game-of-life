@@ -4,10 +4,12 @@ version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 authors = [
-    { name = "Conor Doyle", email = "conor@ehsai.ca" }
+    { name = "Conor Doyle", email = ""}
 ]
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "pygame-ce>=2.5.5",
+]
 
 [project.scripts]
 game-of-life = "game_of_life.__main__:main"
