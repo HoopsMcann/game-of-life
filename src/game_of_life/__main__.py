@@ -1,47 +1,11 @@
 import pygame
 
-from random import randint
 
 WINDOW_WIDTH = 800
 WINDOW_HEIGHT = 600
 
-TILE_SIZE = 20
+TILE_SIZE = 10
 GREY = (50, 50, 50)
-
-
-class Neighbors:
-    def __init__(
-        self,
-        topleft,
-        topright,
-        midtop,
-        midleft,
-        midright,
-        midbottom,
-        bottomleft,
-        bottomright,
-    ):
-        self.topleft = topleft
-        self.topright = topright
-        self.midtop = midtop
-        self.midleft = midleft
-        self.midright = midright
-        self.midbottom = midbottom
-        self.bottomleft = bottomleft
-        self.bottomright = bottomright
-        self._items = [
-            topleft,
-            topright,
-            midtop,
-            midleft,
-            midright,
-            midbottom,
-            bottomleft,
-            bottomright,
-        ]
-
-    def __getitem__(self, index):
-        return self._items[index]
 
 
 class Cell(pygame.sprite.Sprite):
