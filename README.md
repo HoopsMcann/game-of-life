@@ -1,3 +1,6 @@
 # PyGame of Life
 
-A game of life implementation using pygame
+A game of life implementation using pygame.
+
+# Installation
+
