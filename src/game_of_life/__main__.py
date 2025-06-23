@@ -5,7 +5,7 @@ from random import randint
 WINDOW_WIDTH = 800
 WINDOW_HEIGHT = 600
 
-TILE_SIZE = 10
+TILE_SIZE = 20
 GREY = (50, 50, 50)
 
 
@@ -80,41 +80,40 @@ class Cell(pygame.sprite.Sprite):
             self.image.fill((0, 0, 0, 0))
             self.alive = False
 
-    def update(self, all_cells: dict[tuple[int, int], "Cell"]):
+    def get_next_state(self, all_cells: dict[tuple[int, int], "Cell"]):
         nbrs = self.get_nbrs(all_cells)
-        # [n.toggle() for n in nbrs]
 
-        # game of life rules ...
+        # game of life rules
         live_nbrs = sum([n.alive for n in nbrs])
         if self.alive:
-            if live_nbrs < 2 or live_nbrs > 3:
-                self.toggle()
+            self.next_state = live_nbrs == 2 or live_nbrs == 3
         if not self.alive:
-            if live_nbrs == 3:
-                self.toggle()
+            self.next_state = live_nbrs == 3
+
+    def update(self):
+        self.alive = self.next_state
+        if self.alive:
+            self.image.fill((255, 255, 255, 255))
+        else:
+            self.image.fill((0, 0, 0, 0))
 
     def get_nbrs(self, cells: dict[tuple[int, int], "Cell"]):
-        topleft = cells[(self.pos[0] - TILE_SIZE, self.pos[1] - TILE_SIZE)]
-        topright = cells[(self.pos[0] + TILE_SIZE, self.pos[1] - TILE_SIZE)]
-
-        midtop = cells[(self.pos[0], self.pos[1] - TILE_SIZE)]
-        midleft = cells[(self.pos[0] - TILE_SIZE, self.pos[1])]
-        midright = cells[(self.pos[0] + TILE_SIZE, self.pos[1])]
-        midbottom = cells[(self.pos[0], self.pos[1] + TILE_SIZE)]
-
-        bottomleft = cells[(self.pos[0] - TILE_SIZE, self.pos[1] + TILE_SIZE)]
-        bottomright = cells[(self.pos[0] + TILE_SIZE, self.pos[1] + TILE_SIZE)]
-
-        return Neighbors(
-            topleft,
-            topright,
-            midtop,
-            midleft,
-            midright,
-            midbottom,
-            bottomleft,
-            bottomright,
-        )
+        nbrs = []
+        positions = [
+            (-TILE_SIZE, -TILE_SIZE),
+            (TILE_SIZE, -TILE_SIZE),
+            (0, -TILE_SIZE),
+            (-TILE_SIZE, 0),
+            (TILE_SIZE, 0),
+            (0, TILE_SIZE),
+            (-TILE_SIZE, TILE_SIZE),
+            (TILE_SIZE, TILE_SIZE)
+        ]
+        for i, j in positions:
+            nbr_x = (self.pos[0] + i) % WINDOW_WIDTH
+            nbr_y = (self.pos[1] + j) % WINDOW_HEIGHT
+            nbrs.append(cells[(nbr_x, nbr_y)])
+        return nbrs
 
 
 def draw_grid(screen, tile_size: int):
@@ -139,6 +138,11 @@ def get_all_cells(groups):
         for j in range(0, WINDOW_HEIGHT, TILE_SIZE):
             cells[(i, j)] = Cell(groups, (i, j))
     return cells
+
+
+def compute_next_state(cells):
+    for _, cell in cells.items():
+        cell.get_next_state(cells)
 
 
 def main():
@@ -172,7 +176,8 @@ def main():
             start = True
 
         if start:
-            all_sprites.update(all_cells)
+            compute_next_state(all_cells)
+            all_sprites.update()
 
         screen.fill("black")
         draw_grid(screen, TILE_SIZE)
