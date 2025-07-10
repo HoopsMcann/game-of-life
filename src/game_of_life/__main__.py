@@ -1,6 +1,5 @@
 import pygame
 
-
 WINDOW_WIDTH = 800
 WINDOW_HEIGHT = 600
 
@@ -71,7 +70,7 @@ class Cell(pygame.sprite.Sprite):
             (TILE_SIZE, 0),
             (0, TILE_SIZE),
             (-TILE_SIZE, TILE_SIZE),
-            (TILE_SIZE, TILE_SIZE)
+            (TILE_SIZE, TILE_SIZE),
         ]
         for i, j in positions:
             nbr_x = (self.pos[0] + i) % WINDOW_WIDTH
